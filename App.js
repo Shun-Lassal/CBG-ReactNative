@@ -1,7 +1,18 @@
+// TODO LIST:
+/*
+1. STYLING
+2. STORE DATA
+3. CALL API
+
+CELUI QUI TOUCHE JE L'ENCULE C'EST BON ??
+
+
+*/
+
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import { NavigationContainer, useFocusEffect, useNavigationState } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/core';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -9,8 +20,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 function HomeScreen({navigation}) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Bienvenue sur CBGames!</Text>
-      <Text>Veuillez vous connecter/vous enregistrer</Text>
+      <Text style={styles}>Bienvenue sur CBGames!</Text>
+      <Text style={styles}>>Veuillez vous connecter/vous enregistrer</Text>
       <Button 
         style={styles.buttonRegisterLogin}
         onPress={() => navigation.navigate('Connexion')}
@@ -23,6 +34,12 @@ function HomeScreen({navigation}) {
         title="Inscription"
         accessibilityLabel="Appuyez sur ce bouton pour être redirigé vers la page de inscription"
       />
+      <Button 
+        style={styles.buttonRegisterLogin}
+        onPress={() => navigation.navigate('Menu')}
+        title="Menu des jeux"
+        accessibilityLabel="Appuyez sur ce bouton pour être redirigé vers la page de inscription"
+      />
     </View>
   );
 }
@@ -30,7 +47,7 @@ function HomeScreen({navigation}) {
 function InscriptionScreen({navigation}) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Inscription</Text>
+      <Text style={styles}>Inscription</Text>
       <TextInput
         style={styles.inputRegisterLogin}
         placeholder="E-mail" 
@@ -98,10 +115,10 @@ const ProfilScreen = ({route, navigation}) => {
   const { pseudo, password } = route.params;
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Nom du profil: {pseudo}</Text>
-      <Text>Password: {password}</Text>
-      <Text>Parties Jouées</Text>
-      <Text>Parties Gagnées</Text> 
+      <Text style={styles}>Nom du profil: {pseudo}</Text>
+      <Text style={styles}>Password: {password}</Text>
+      <Text style={styles}>Parties Jouées</Text>
+      <Text style={styles}>Parties Gagnées</Text> 
       <Button 
         style={styles.buttonRegisterLogin}
         title="Retour au menu"
@@ -112,38 +129,41 @@ const ProfilScreen = ({route, navigation}) => {
   );  
 }
 
-function MainScreen(){
+function MainScreen({navigation}){
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Menu des jeux</Text>
-      <View>
-        <View>
-          <Image />
-          <Text>Jeu 1</Text>
-        </View>
-        <View>
-          <Image />
-          <Text>Jeu 2</Text>
-        </View>
-        <View>
-          <Image />
-          <Text>Jeu 3</Text>
-        </View>
-      </View>
+      <Text style={styles}>Menu des jeux</Text>
+      <ScrollView>
+
+        <TouchableOpacity
+        style={styles}
+        onPress={() => navigation.navigate('InfoJeu')}
+        >
+          <Text style={styles}>Jeu 1</Text>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Text style={styles}>Jeu 2</Text>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Text style={styles}>Jeu 3</Text>
+        </TouchableOpacity>
+
+      </ScrollView>
     </View>
   );  
 }
 
-function GameInfoScreen(){
+function GameInfoScreen({navigation}){
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Nom du jeu</Text>
+      <Text style={styles}>Nom du jeu</Text>
       <View>
-        <Text>Nombre de joueurs: </Text>
-        <Text>Durée de la partie: </Text>
-        <Text>Description/Règles du jeu: </Text>
+        <Text style={styles}>Nombre de joueurs: </Text>
+        <Text style={styles}>Durée de la partie: </Text>
+        <Text style={styles}>Description/Règles du jeu: </Text>
         <Button
-          style={styles}
+          style={styles.buttonRegisterLogin}
           placeholder="Jouer!"
           accessibilityLabel="Appuyez sur ce bouton pour jouer"
         />
@@ -170,6 +190,8 @@ export default function App() {
         <Stack.Screen name="Inscription" component={InscriptionScreen} options={{ title: 'Inscription' }}/>
         <Stack.Screen name="Connexion" component={ConnexionScreen} options={{ title: 'Connexion' }}/>
         <Stack.Screen name="Profil" component={ProfilScreen} options={{ title: 'Profil' }}/>
+        <Stack.Screen name="Menu" component={MainScreen} options={{ title: 'Menu' }}/>
+        <Stack.Screen name="InfoJeu" component={GameInfoScreen} options={{ title: 'Info Jeu' }}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -196,4 +218,6 @@ const styles = StyleSheet.create({
   buttonRegisterLogin: {
     paddingTop:10,
   },
+
+
 });
